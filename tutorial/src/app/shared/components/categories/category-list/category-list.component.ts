@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-category-list',
@@ -23,7 +24,8 @@ export class CategoryListComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,9 @@ export class CategoryListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Categoría creada correctamente', 'Aceptar');
+      }
       this.ngOnInit();
     });
   }
@@ -48,6 +53,9 @@ export class CategoryListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Categoría editada correctamente', 'Aceptar');
+      }
       this.ngOnInit();
     });
   }
@@ -63,10 +71,22 @@ export class CategoryListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.categoryService.deleteCategory(category.id).subscribe((result) => {
-          this.ngOnInit();
-        });
+        this.categoryService.deleteCategory(category.id).subscribe(
+          (result) => {
+            this.showSnackBar('Categoría eliminada correctamente', 'Aceptar');
+            this.ngOnInit();
+          },
+          (error) => {
+            this.showSnackBar('Error al eliminar la categoría', 'error');
+          }
+        );
       }
+    });
+  }
+
+  private showSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
     });
   }
 }
