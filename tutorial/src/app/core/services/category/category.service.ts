@@ -17,7 +17,7 @@ export class CategoryService {
     return of(null);
   }
 
-  deleteCategory(category: Category): Observable<Category> {
+  deleteCategory(categoryId: number): Observable<Category> {
     return of(null);
   }
 }

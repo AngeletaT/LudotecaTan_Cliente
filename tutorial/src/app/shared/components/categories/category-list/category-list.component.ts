@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../../../../core/models/Category';
 import { CategoryService } from '../../../../core/services/category/category.service';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
+import { DialogConfirmationComponent } from '../../dialog-confirmation/dialog-confirmation.component';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTableModule } from '@angular/material/table';
@@ -48,6 +49,24 @@ export class CategoryListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.ngOnInit();
+    });
+  }
+
+  deleteCategory(category: Category) {
+    const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Eliminar categoría',
+        description:
+          'Atención si borra la categoría se perderán sus datos.<br> ¿Desea eliminar la categoría?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.categoryService.deleteCategory(category.id).subscribe((result) => {
+          this.ngOnInit();
+        });
+      }
     });
   }
 }
