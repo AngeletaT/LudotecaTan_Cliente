@@ -3,17 +3,17 @@
 
     <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef> Identificador </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="background-color: #f3bfd9;"> Identificador </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Nombre categoría </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="background-color: #f3bfd9;"> Nombre categoría </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-header-cell *matHeaderCellDef style="background-color: #f3bfd9;"></mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <button mat-icon-button color="primary" (click)="editCategory(element)">
                     <mat-icon>edit</mat-icon>

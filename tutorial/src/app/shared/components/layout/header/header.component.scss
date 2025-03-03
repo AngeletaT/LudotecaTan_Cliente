@@ -1,5 +1,5 @@
 .mat-toolbar {
-  background-color: rgb(144, 144, 232);
+  background-color: #BF1469;
   color: white;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
@@ -7,6 +7,7 @@
 .header_container {
   display: flex;
   width: 100%;
+
   .header_title {
     .mat-icon {
       vertical-align: sub;
@@ -52,6 +53,7 @@
   .header_login {
     font-size: 16px;
     cursor: pointer;
+
     .mat-icon {
       vertical-align: sub;
     }
