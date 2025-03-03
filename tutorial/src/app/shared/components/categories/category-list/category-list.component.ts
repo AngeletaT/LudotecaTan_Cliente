@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../../../../core/models/Category';
+import { Category } from '../../../../core/models/category/Category';
 import { CategoryService } from '../../../../core/services/category/category.service';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
 import { DialogConfirmationComponent } from '../../dialog-confirmation/dialog-confirmation.component';
