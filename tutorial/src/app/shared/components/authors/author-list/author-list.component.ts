@@ -34,7 +34,11 @@ export class AuthorListComponent implements OnInit {
   dataSource = new MatTableDataSource<Author>();
   displayedColumns: string[] = ['id', 'name', 'nationality', 'action'];
 
-  constructor(private authorService: AuthorService, public dialog: MatDialog) {}
+  constructor(
+    private authorService: AuthorService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadPage();
@@ -71,6 +75,9 @@ export class AuthorListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Autor creado correctamente', 'Aceptar');
+      }
       this.loadPage();
     });
   }
@@ -81,6 +88,9 @@ export class AuthorListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Autor editado correctamente', 'Aceptar');
+      }
       this.loadPage();
     });
   }
@@ -96,10 +106,22 @@ export class AuthorListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.authorService.deleteAuthor(author.id).subscribe((result) => {
-          this.loadPage();
-        });
+        this.authorService.deleteAuthor(author.id).subscribe(
+          (result) => {
+            this.showSnackBar('Autor eliminado correctamente', 'Aceptar');
+            this.loadPage();
+          },
+          (error) => {
+            this.showSnackBar('Error al eliminar el Autor', 'error');
+          }
+        );
       }
+    });
+  }
+
+  private showSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
     });
   }
 }
