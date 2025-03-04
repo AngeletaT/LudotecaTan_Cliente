@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { GameItemComponent } from './game-item/game-item.component';
 
 @Component({
@@ -41,7 +42,8 @@ export class GameListComponent implements OnInit {
   constructor(
     private gameService: GameService,
     private categoryService: CategoryService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,6 @@ export class GameListComponent implements OnInit {
     this.categoryService
       .getCategories()
       .subscribe((categories) => (this.categories = categories));
-    console.log(this.categories);
   }
 
   onCleanFilter(): void {
@@ -74,6 +75,9 @@ export class GameListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Juego creado correctamente', 'Aceptar');
+      }
       this.ngOnInit();
     });
   }
@@ -84,6 +88,9 @@ export class GameListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.showSnackBar('Juego editado correctamente', 'Aceptar');
+      }
       this.onSearch();
     });
   }
@@ -94,5 +101,11 @@ export class GameListComponent implements OnInit {
 
   trackByGameId(index: number, game: Game): number {
     return game.id;
+  }
+
+  private showSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
   }
 }
