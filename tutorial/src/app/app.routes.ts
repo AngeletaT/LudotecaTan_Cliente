@@ -27,4 +27,11 @@ export const routes: Routes = [
         './shared/components/authors/author-list/author-list.component'
       ).then((m) => m.AuthorListComponent),
   },
+  {
+    path: 'clients',
+    loadComponent: () =>
+      import(
+        './shared/components/clients/client-list/client-list.component'
+      ).then((m) => m.ClientListComponent),
+  },
 ];
