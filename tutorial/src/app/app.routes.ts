@@ -2,6 +2,18 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/games',
+    pathMatch: 'full',
+  },
+  {
+    path: 'games',
+    loadComponent: () =>
+      import('./shared/components/games/game-list/game-list.component').then(
+        (m) => m.GameListComponent
+      ),
+  },
+  {
     path: 'categories',
     loadComponent: () =>
       import(

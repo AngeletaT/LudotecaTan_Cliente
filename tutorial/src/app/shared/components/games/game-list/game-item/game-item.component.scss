@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    width: 325px;
+
+    mat-card {
+        width: 100%;
+        margin: 10px;
+        display: flex;
+        flex-direction: row;
+        padding: 1rem;
+
+        .photo {
+            margin-right: 30px;
+
+            img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        .detail {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .title {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .properties {
+                font-size: 11px;
+
+                div {
+                    height: 15px;
+                }
+            }
+        }
+    }
+
+    mat-card:hover {
+        cursor: pointer;
+        background-color: #f5f5f5;
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+    }
+}
