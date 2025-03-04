@@ -4,6 +4,7 @@ import { Pageable } from '../../models/page/Pageable';
 import { Author } from '../../models/author/Author';
 import { AuthorPage } from '../../models/author/AuthorPage';
 import { AUTHOR_DATA } from '../../models/author/mock-authors';
+import { AUTHOR_DATA_LIST } from '../../models/author/mock-authors-list';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -16,6 +17,10 @@ export class AuthorService {
 
   getAuthors(pageable: Pageable): Observable<AuthorPage> {
     return this.http.post<AuthorPage>(this.baseUrl, { pageable: pageable });
+  }
+
+  getAllAuthors(): Observable<Author[]> {
+    return of(AUTHOR_DATA_LIST);
   }
 
   saveAuthor(author: Author): Observable<Author> {
