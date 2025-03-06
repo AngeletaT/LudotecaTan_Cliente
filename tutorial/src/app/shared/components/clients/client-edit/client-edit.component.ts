@@ -6,11 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-client-edit',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -18,10 +20,11 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
   ],
   templateUrl: './client-edit.component.html',
-  styleUrl: './client-edit.component.scss',
+  styleUrls: ['./client-edit.component.scss'],
 })
 export class ClientEditComponent implements OnInit {
   client: Client;
+  errorMessage: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<ClientEditComponent>,
@@ -30,14 +33,23 @@ export class ClientEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.client = this.client = this.data.client
+    this.client = this.data.client
       ? Object.assign({}, this.data.client)
       : new Client();
   }
+
   onSave() {
-    this.clientService.saveClient(this.client).subscribe(() => {
-      this.dialogRef.close(true);
-    });
+    this.errorMessage = null; // Reset error message before saving
+    this.clientService.saveClient(this.client).subscribe(
+      () => {
+        console.log('Client saved successfully');
+        this.dialogRef.close(true);
+      },
+      (error) => {
+        console.log('Error in onSave:', error);
+        this.errorMessage = error;
+      }
+    );
   }
 
   onClose() {
