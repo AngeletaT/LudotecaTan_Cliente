@@ -102,11 +102,6 @@ export class LoanEditComponent implements OnInit {
       );
     }
 
-    // Validacion de existencia de errores
-    if (this.errorMessages.length > 0) {
-      return;
-    }
-
     // Validacion de conflictos de prestamo
     this.loanService.validateLoan(this.loan).subscribe((validationResponse) => {
       if (!validationResponse.valid) {
@@ -114,14 +109,15 @@ export class LoanEditComponent implements OnInit {
           validationResponse.errorMessages
         );
         return;
+      } else if (this.errorMessages.length > 0) {
+        return;
+      } else {
+        this.loan.rentalDate = this.formatDate(new Date(this.loan.rentalDate));
+        this.loan.returnDate = this.formatDate(new Date(this.loan.returnDate));
+        this.loanService.saveLoan(this.loan).subscribe(() => {
+          this.dialogRef.close(true);
+        });
       }
-    });
-
-    // Guardar prestamo
-    this.loan.rentalDate = this.formatDate(new Date(this.loan.rentalDate));
-    this.loan.returnDate = this.formatDate(new Date(this.loan.returnDate));
-    this.loanService.saveLoan(this.loan).subscribe(() => {
-      this.dialogRef.close(true);
     });
   }
 
