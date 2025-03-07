@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
   ],
   templateUrl: './client-edit.component.html',
-  styleUrls: ['./client-edit.component.scss'],
+  styleUrl: './client-edit.component.scss',
 })
 export class ClientEditComponent implements OnInit {
   client: Client;

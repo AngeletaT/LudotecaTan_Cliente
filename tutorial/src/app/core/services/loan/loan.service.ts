@@ -27,7 +27,7 @@ export class LoanService {
       gameId: gameId,
       loanDate: loanDate,
     };
-    return this.http.post<LoanPage>(this.baseUrl, body);
+    return this.http.post<LoanPage>(`${this.baseUrl}/filter`, body);
   }
 
   getAllLoans(): Observable<Loan[]> {
