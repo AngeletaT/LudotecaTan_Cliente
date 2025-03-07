@@ -36,6 +36,7 @@ export class LoanEditComponent implements OnInit {
   loan: Loan;
   games: Game[];
   clients: Client[];
+  errorMessages: string[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<LoanEditComponent>,
@@ -76,9 +77,35 @@ export class LoanEditComponent implements OnInit {
   }
 
   onSave() {
+    this.errorMessages = [];
+
+    if (this.loan.rentalDate && this.loan.returnDate) {
+      if (this.loan.returnDate < this.loan.rentalDate) {
+        this.errorMessages.push(
+          'La fecha de fin no puede ser anterior a la fecha de inicio.'
+        );
+      }
+
+      const diffTime = Math.abs(
+        new Date(this.loan.returnDate).getTime() -
+          new Date(this.loan.rentalDate).getTime()
+      );
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays > 14) {
+        this.errorMessages.push('El periodo de préstamo máximo es de 14 días.');
+      }
+    } else {
+      this.errorMessages.push(
+        'Las fechas de préstamo y devolución son obligatorias.'
+      );
+    }
+
+    if (this.errorMessages.length > 0) {
+      return;
+    }
+
     this.loan.rentalDate = this.formatDate(new Date(this.loan.rentalDate));
     this.loan.returnDate = this.formatDate(new Date(this.loan.returnDate));
-    console.log(this.loan);
     this.loanService.saveLoan(this.loan).subscribe(() => {
       this.dialogRef.close(true);
     });
