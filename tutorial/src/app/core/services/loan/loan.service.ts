@@ -7,6 +7,11 @@ import { LOAN_DATA } from '../../models/loan/mock-loan';
 import { LOAN_DATA_LIST } from '../../models/loan/mock-loan-list';
 import { HttpClient } from '@angular/common/http';
 
+export interface LoanValidationResponse {
+  valid: boolean;
+  errorMessages: string[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -42,5 +47,12 @@ export class LoanService {
 
   deleteLoan(idLoan: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${idLoan}`);
+  }
+
+  validateLoan(loan: Loan): Observable<LoanValidationResponse> {
+    return this.http.post<LoanValidationResponse>(
+      `${this.baseUrl}/validate`,
+      loan
+    );
   }
 }

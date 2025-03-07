@@ -79,6 +79,7 @@ export class LoanEditComponent implements OnInit {
   onSave() {
     this.errorMessages = [];
 
+    // Validacion de fechas
     if (this.loan.rentalDate && this.loan.returnDate) {
       if (this.loan.returnDate < this.loan.rentalDate) {
         this.errorMessages.push(
@@ -86,6 +87,7 @@ export class LoanEditComponent implements OnInit {
         );
       }
 
+      // Validacion de periodo de prestamo
       const diffTime = Math.abs(
         new Date(this.loan.returnDate).getTime() -
           new Date(this.loan.rentalDate).getTime()
@@ -100,10 +102,22 @@ export class LoanEditComponent implements OnInit {
       );
     }
 
+    // Validacion de existencia de errores
     if (this.errorMessages.length > 0) {
       return;
     }
 
+    // Validacion de conflictos de prestamo
+    this.loanService.validateLoan(this.loan).subscribe((validationResponse) => {
+      if (!validationResponse.valid) {
+        this.errorMessages = this.errorMessages.concat(
+          validationResponse.errorMessages
+        );
+        return;
+      }
+    });
+
+    // Guardar prestamo
     this.loan.rentalDate = this.formatDate(new Date(this.loan.rentalDate));
     this.loan.returnDate = this.formatDate(new Date(this.loan.returnDate));
     this.loanService.saveLoan(this.loan).subscribe(() => {
