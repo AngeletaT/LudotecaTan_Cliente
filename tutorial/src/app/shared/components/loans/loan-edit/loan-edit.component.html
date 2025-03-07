@@ -1,0 +1,49 @@
+<div class="container">
+    <h1 *ngIf="loan.id">Modificar préstamo</h1>
+    <h1 *ngIf="!loan.id">Crear préstamo</h1>
+
+    <form>
+        <mat-form-field>
+            <mat-label>Id</mat-label>
+            <input matInput [(ngModel)]="loan.id" name="id" disabled readonly>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Juego</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.game" name="game" required>
+                <mat-option *ngFor="let game of games; trackBy: trackByGameId" [value]="game">{{ game.title
+                    }}</mat-option>
+            </mat-select>
+            <mat-error>El juego no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.client" name="client" required>
+                <mat-option *ngFor="let client of clients; trackBy: trackByClientId" [value]="client">{{ client.name
+                    }}</mat-option>
+            </mat-select>
+            <mat-error>El cliente no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de Préstamo</mat-label>
+            <input matInput [matDatepicker]="startPicker" [(ngModel)]="loan.rentalDate" name="rentalDate" required>
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+            <mat-error>La fecha de préstamo no puede estar vacía</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de Devolución</mat-label>
+            <input matInput [matDatepicker]="endPicker" [(ngModel)]="loan.returnDate" name="returnDate" required>
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+            <mat-error>La fecha de devolución no puede estar vacía</mat-error>
+        </mat-form-field>
+    </form>
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+    </div>
+</div>
