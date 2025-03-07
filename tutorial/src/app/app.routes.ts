@@ -34,4 +34,11 @@ export const routes: Routes = [
         './shared/components/clients/client-list/client-list.component'
       ).then((m) => m.ClientListComponent),
   },
+  {
+    path: 'loans',
+    loadComponent: () =>
+      import('./shared/components/loans/loan-list/loan-list.component').then(
+        (m) => m.LoanListComponent
+      ),
+  },
 ];
