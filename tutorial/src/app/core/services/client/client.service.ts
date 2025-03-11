@@ -30,11 +30,11 @@ export class ClientService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
+    let errorMessage = 'Ocurrió un error desconocido';
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      errorMessage = error.error.message || 'An unknown error occurred!';
+      errorMessage = error.error.message || 'Ocurrió un error desconocido';
     }
     return throwError(errorMessage);
   }

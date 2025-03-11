@@ -25,6 +25,7 @@ export class AuthFormsComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
@@ -43,6 +44,7 @@ export class AuthFormsComponent implements OnInit {
   onSwitchMode(): void {
     this.isLoginMode = !this.isLoginMode;
     this.errorMessage = '';
+    this.successMessage = '';
   }
 
   onSubmitLogin(): void {
@@ -53,9 +55,12 @@ export class AuthFormsComponent implements OnInit {
     this.authService.login(username, password).subscribe(
       (response) => {
         console.log(response);
+        this.successMessage = response.message;
+        this.errorMessage = '';
       },
       (error) => {
-        this.errorMessage = 'Credenciales inválidas';
+        this.errorMessage = error.message;
+        this.successMessage = '';
       }
     );
   }
@@ -68,9 +73,12 @@ export class AuthFormsComponent implements OnInit {
     this.authService.register(username, password).subscribe(
       (response) => {
         console.log(response);
+        this.successMessage = response.message;
+        this.errorMessage = '';
       },
       (error) => {
-        this.errorMessage = 'Error en el registro';
+        this.errorMessage = error.message;
+        this.successMessage = '';
       }
     );
   }

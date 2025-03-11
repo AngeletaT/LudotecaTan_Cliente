@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { LoginResponse } from '../../models/auth/Auth';
 
 @Injectable({
@@ -11,23 +12,33 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:8080/auth';
 
-  login(username: string, password: string): Observable<LoginResponse> {
+  login(username: string, password: string): Observable<any> {
     const body = { username, password };
-    console.log(body);
-    const response = this.http.post<LoginResponse>(
-      `${this.baseUrl}/login`,
-      body
+    return this.http.post<any>(`${this.baseUrl}/login`, body).pipe(
+      map((response) => {
+        return { success: true, message: response.message, data: response };
+      }),
+      catchError(this.handleError)
     );
-    console.log(response);
-    return response;
   }
 
-  register(username: string, password: string): Observable<LoginResponse> {
+  register(username: string, password: string): Observable<any> {
     const body = { username, password };
-    console.log(body);
-    console.log(
-      this.http.post<LoginResponse>(`${this.baseUrl}/register`, body)
+    return this.http.post<any>(`${this.baseUrl}/register`, body).pipe(
+      map((response) => {
+        return { success: true, message: response.message };
+      }),
+      catchError(this.handleError)
     );
-    return this.http.post<LoginResponse>(`${this.baseUrl}/register`, body);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Ocurrió un error desconocido';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = error.error.message || 'Ocurrió un error desconocido';
+    }
+    return throwError({ success: false, message: errorMessage });
   }
 }
