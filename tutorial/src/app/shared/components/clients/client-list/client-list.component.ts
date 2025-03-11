@@ -21,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ClientListComponent implements OnInit {
   dataSource = new MatTableDataSource<Client>();
   displayedColumns: string[] = ['id', 'name', 'action'];
+  isLoggedIn: boolean = false;
 
   constructor(
     private clientService: ClientService,
@@ -29,9 +30,24 @@ export class ClientListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.clientService
-      .getClients()
-      .subscribe((clients) => (this.dataSource.data = clients));
+    this.checkLoginStatus();
+    this.loadClients();
+  }
+
+  checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
+    this.isLoggedIn = !!token;
+    if (!this.isLoggedIn) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (column) => column !== 'action'
+      );
+    }
+  }
+
+  loadClients() {
+    this.clientService.getClients().subscribe((clients) => {
+      this.dataSource.data = clients;
+    });
   }
 
   createClient() {
@@ -43,7 +59,7 @@ export class ClientListComponent implements OnInit {
       if (result === true) {
         this.showSnackBar('Cliente creado correctamente', 'Aceptar');
       }
-      this.ngOnInit();
+      this.loadClients();
     });
   }
 
@@ -56,7 +72,7 @@ export class ClientListComponent implements OnInit {
       if (result === true) {
         this.showSnackBar('Cliente editado correctamente', 'Aceptar');
       }
-      this.ngOnInit();
+      this.loadClients();
     });
   }
 
@@ -74,7 +90,7 @@ export class ClientListComponent implements OnInit {
         this.clientService.deleteClient(client.id).subscribe(
           (result) => {
             this.showSnackBar('Cliente eliminado correctamente', 'Aceptar');
-            this.ngOnInit();
+            this.loadClients();
           },
           (error) => {
             this.showSnackBar('Error al eliminar el Cliente', 'error');

@@ -38,6 +38,7 @@ export class GameListComponent implements OnInit {
   games: Game[] = [];
   filterCategory: Category;
   filterTitle: string;
+  isLoggedIn: boolean = false;
 
   constructor(
     private gameService: GameService,
@@ -47,10 +48,16 @@ export class GameListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkLoginStatus();
     this.gameService.getGames().subscribe((games) => (this.games = games));
     this.categoryService
       .getCategories()
       .subscribe((categories) => (this.categories = categories));
+  }
+
+  checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
+    this.isLoggedIn = !!token;
   }
 
   onCleanFilter(): void {

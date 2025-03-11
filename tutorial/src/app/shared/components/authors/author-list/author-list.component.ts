@@ -30,6 +30,7 @@ export class AuthorListComponent implements OnInit {
   pageNumber: number = 0;
   pageSize: number = 5;
   totalElements: number = 0;
+  isLoggedIn: boolean = false;
 
   dataSource = new MatTableDataSource<Author>();
   displayedColumns: string[] = ['id', 'name', 'nationality', 'action'];
@@ -41,7 +42,18 @@ export class AuthorListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkLoginStatus();
     this.loadPage();
+  }
+
+  checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
+    this.isLoggedIn = !!token;
+    if (!this.isLoggedIn) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (column) => column !== 'action'
+      );
+    }
   }
 
   loadPage(event?: PageEvent) {

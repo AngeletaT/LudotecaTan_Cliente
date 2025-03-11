@@ -24,12 +24,11 @@
     </div>
 
     <div class="game-list">
-        @for (game of games; track game.id) {
-        <app-game-item (click)="editGame(game)" [game]="game" />
-        }
+        <app-game-item *ngFor="let game of games; trackBy: trackByGameId" (click)="editGame(game)"
+            [game]="game"></app-game-item>
     </div>
 
-    <div class="buttons">
+    <div class="buttons" *ngIf="isLoggedIn">
         <button mat-flat-button color="primary" (click)="createGame()">
             Nuevo juego
         </button>

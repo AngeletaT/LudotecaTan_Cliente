@@ -53,6 +53,7 @@ export class LoanListComponent implements OnInit {
   pageNumber: number = 0;
   pageSize: number = 5;
   totalElements: number = 0;
+  isLoggedIn: boolean = false;
 
   dataSource = new MatTableDataSource<Loan>();
   displayedColumns: string[] = [
@@ -73,11 +74,22 @@ export class LoanListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkLoginStatus();
     this.loadPage();
     this.clientService
       .getClients()
       .subscribe((clients) => (this.clients = clients));
     this.gameService.getGames().subscribe((games) => (this.games = games));
+  }
+
+  checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
+    this.isLoggedIn = !!token;
+    if (!this.isLoggedIn) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (column) => column !== 'actions'
+      );
+    }
   }
 
   loadPage(event?: PageEvent) {
@@ -142,7 +154,7 @@ export class LoanListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.showSnackBar('Juego creado correctamente', 'Aceptar');
+        this.showSnackBar('Préstamo creado correctamente', 'Aceptar');
       }
       this.ngOnInit();
     });
@@ -151,9 +163,9 @@ export class LoanListComponent implements OnInit {
   deleteLoan(loan: Loan) {
     const dialogRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
-        title: 'Eliminar autor',
+        title: 'Eliminar préstamo',
         description:
-          'Atención si borra el autor se perderán sus datos.<br> ¿Desea eliminar el autor?',
+          'Atención si borra el préstamo se perderán sus datos.<br> ¿Desea eliminar el préstamo?',
       },
     });
 
@@ -161,11 +173,11 @@ export class LoanListComponent implements OnInit {
       if (result) {
         this.loanService.deleteLoan(loan.id).subscribe(
           (result) => {
-            this.showSnackBar('Autor eliminado correctamente', 'Aceptar');
+            this.showSnackBar('Préstamo eliminado correctamente', 'Aceptar');
             this.loadPage();
           },
           (error) => {
-            this.showSnackBar('Error al eliminar el Autor', 'error');
+            this.showSnackBar('Error al eliminar el préstamo', 'error');
           }
         );
       }

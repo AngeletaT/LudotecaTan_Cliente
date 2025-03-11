@@ -12,7 +12,7 @@
             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="action">
+        <ng-container *ngIf="isLoggedIn" matColumnDef="action">
             <mat-header-cell *matHeaderCellDef style="background-color: #f3bfd9;"></mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <button mat-icon-button color="primary" (click)="editClient(element)">
@@ -28,7 +28,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <div class="buttons">
+    <div class="buttons" *ngIf="isLoggedIn">
         <button mat-flat-button color="primary" (click)="createClient()">Nuevo cliente</button>
     </div>
 </div>

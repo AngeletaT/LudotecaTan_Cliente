@@ -21,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CategoryListComponent implements OnInit {
   dataSource = new MatTableDataSource<Category>();
   displayedColumns: string[] = ['id', 'name', 'action'];
+  isLoggedIn: boolean = false;
 
   constructor(
     private categoryService: CategoryService,
@@ -29,9 +30,24 @@ export class CategoryListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categoryService
-      .getCategories()
-      .subscribe((categories) => (this.dataSource.data = categories));
+    this.checkLoginStatus();
+    this.loadCategories();
+  }
+
+  checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
+    this.isLoggedIn = !!token;
+    if (!this.isLoggedIn) {
+      this.displayedColumns = this.displayedColumns.filter(
+        (column) => column !== 'action'
+      );
+    }
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe((categories) => {
+      this.dataSource.data = categories;
+    });
   }
 
   createCategory() {
@@ -43,7 +59,7 @@ export class CategoryListComponent implements OnInit {
       if (result === true) {
         this.showSnackBar('Categoría creada correctamente', 'Aceptar');
       }
-      this.ngOnInit();
+      this.loadCategories();
     });
   }
 
@@ -56,7 +72,7 @@ export class CategoryListComponent implements OnInit {
       if (result === true) {
         this.showSnackBar('Categoría editada correctamente', 'Aceptar');
       }
-      this.ngOnInit();
+      this.loadCategories();
     });
   }
 
@@ -74,7 +90,7 @@ export class CategoryListComponent implements OnInit {
         this.categoryService.deleteCategory(category.id).subscribe(
           (result) => {
             this.showSnackBar('Categoría eliminada correctamente', 'Aceptar');
-            this.ngOnInit();
+            this.loadCategories();
           },
           (error) => {
             this.showSnackBar('Error al eliminar la categoría', 'error');

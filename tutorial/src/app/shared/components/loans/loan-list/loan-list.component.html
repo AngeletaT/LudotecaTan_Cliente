@@ -60,7 +60,7 @@
             <mat-cell *matCellDef="let loan"> {{loan.returnDate | date}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="actions">
+        <ng-container *ngIf="isLoggedIn" matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
             <mat-cell *matCellDef="let loan">
                 <button mat-icon-button color="warn" (click)="deleteLoan(loan)">
@@ -76,7 +76,7 @@
     <mat-paginator (page)="loadPage($event)" [pageSizeOptions]="[5, 10, 20]" [pageIndex]="pageNumber"
         [pageSize]="pageSize" [length]="totalElements" showFirstLastButtons></mat-paginator>
 
-    <div class="buttons">
+    <div class="buttons" *ngIf="isLoggedIn">
         <button mat-flat-button color="primary" (click)="createLoan()">Nuevo préstamo</button>
     </div>
 </div>
