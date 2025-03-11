@@ -26,7 +26,12 @@
             </div>
 
             <div class="header_login">
-                <a routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+                <ng-container *ngIf="username; else loginLink">
+                    <span>Bienvenido, {{ username }}</span>
+                </ng-container>
+                <ng-template #loginLink>
+                    <a routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+                </ng-template>
             </div>
         </div>
     </mat-toolbar-row>

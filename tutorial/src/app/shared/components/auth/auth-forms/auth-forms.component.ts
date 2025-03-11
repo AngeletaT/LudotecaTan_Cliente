@@ -61,8 +61,11 @@ export class AuthFormsComponent implements OnInit {
     this.authService.login(username, password).subscribe(
       (response) => {
         const token = response.data.token;
-        sessionStorage.setItem('authToken', token);
+        const username = response.data.username;
+        sessionStorage.setItem('username', username);
+        sessionStorage.setItem('token', token);
         this.errorMessage = '';
+        window.location.href = '/games';
       },
       (error) => {
         this.errorMessage = error.message;
