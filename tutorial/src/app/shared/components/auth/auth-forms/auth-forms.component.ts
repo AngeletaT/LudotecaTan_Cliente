@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogMessageComponent } from '../../dialog-message/dialog-message.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +29,11 @@ export class AuthFormsComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -54,8 +60,8 @@ export class AuthFormsComponent implements OnInit {
     const { username, password } = this.loginForm.value;
     this.authService.login(username, password).subscribe(
       (response) => {
-        console.log(response);
-        this.successMessage = response.message;
+        const token = response.data.token;
+        sessionStorage.setItem('authToken', token);
         this.errorMessage = '';
       },
       (error) => {
@@ -72,9 +78,11 @@ export class AuthFormsComponent implements OnInit {
     const { username, password } = this.registerForm.value;
     this.authService.register(username, password).subscribe(
       (response) => {
-        console.log(response);
         this.successMessage = response.message;
         this.errorMessage = '';
+        this.dialog.open(DialogMessageComponent, {
+          data: { message: 'Registro exitoso. Por favor, inicie sesión.' },
+        });
       },
       (error) => {
         this.errorMessage = error.message;

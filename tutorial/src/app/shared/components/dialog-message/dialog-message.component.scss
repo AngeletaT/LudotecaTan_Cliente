@@ -1,0 +1,22 @@
+:host {
+    display: block;
+    padding: 16px;
+}
+
+.container {
+    min-width: 350px;
+    max-width: 500px;
+    padding: 20px;
+
+    .description {
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        text-align: right;
+
+        button {
+            margin-left: 10px;
+        }
+    }
+}
