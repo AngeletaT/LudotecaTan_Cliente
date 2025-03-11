@@ -41,4 +41,11 @@ export const routes: Routes = [
         (m) => m.LoanListComponent
       ),
   },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./shared/components/auth/auth-forms/auth-forms.component').then(
+        (m) => m.AuthFormsComponent
+      ),
+  },
 ];

@@ -50,16 +50,18 @@
     }
   }
 
-  .header_login {
+  .header_login a {
+    font-weight: lighter;
     font-size: 16px;
+    text-decoration: none;
     cursor: pointer;
-
-    .mat-icon {
-      vertical-align: sub;
-    }
+    color: white;
   }
 
   .header_login:hover {
+    font-weight: normal;
+    font-size: 16px;
     text-decoration: underline;
+    color: lightyellow;
   }
 }
