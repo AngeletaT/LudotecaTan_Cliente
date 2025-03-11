@@ -56,12 +56,37 @@
     text-decoration: none;
     cursor: pointer;
     color: white;
-  }
 
-  .header_login:hover {
-    font-weight: normal;
-    font-size: 16px;
-    text-decoration: underline;
-    color: lightyellow;
+    .mat-button {
+      color: white;
+      font-weight: lighter;
+    }
+
+    button {
+      color: white;
+    }
+
+    .mat-menu-item {
+      color: #BF1469;
+    }
+
+    .mat-menu-item:hover {
+      background-color: #f3bfd9;
+    }
+
+    a {
+      font-weight: lighter;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      color: white;
+    }
+
+    &:hover {
+      font-weight: normal;
+      font-size: 16px;
+      text-decoration: underline;
+      color: lightyellow;
+    }
   }
 }

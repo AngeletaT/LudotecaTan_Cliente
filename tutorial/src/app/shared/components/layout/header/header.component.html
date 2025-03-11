@@ -27,7 +27,10 @@
 
             <div class="header_login">
                 <ng-container *ngIf="username; else loginLink">
-                    <span>Bienvenido, {{ username }}</span>
+                    <button mat-button [matMenuTriggerFor]="menu">{{ username }}</button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+                    </mat-menu>
                 </ng-container>
                 <ng-template #loginLink>
                     <a routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
