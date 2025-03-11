@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class HeaderComponent implements OnInit {
   username: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     this.checkLoginStatus();
@@ -33,8 +34,15 @@ export class HeaderComponent implements OnInit {
   checkLoginStatus() {
     const token = sessionStorage.getItem('token');
     if (token) {
-      const username = sessionStorage.getItem('username');
-      this.username = username;
+      this.authService.validateToken(token).subscribe(
+        (response) => {
+          this.username = response.data.username;
+          sessionStorage.setItem('username', this.username);
+        },
+        (error) => {
+          this.logout();
+        }
+      );
     } else {
       this.username = null;
     }

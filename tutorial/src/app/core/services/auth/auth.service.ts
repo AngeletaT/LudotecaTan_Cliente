@@ -32,6 +32,19 @@ export class AuthService {
     );
   }
 
+  validateToken(token: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}/validate`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .pipe(
+        map((response) => {
+          return { success: true, data: response };
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido';
     if (error.error instanceof ErrorEvent) {
